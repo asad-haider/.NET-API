@@ -25,11 +25,11 @@ namespace WebAPI.Controllers
 
         [HttpGet("")]
         [HttpGet("id/{id?}")]
-        public async Task<IActionResult> Get(short? id, [FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<IActionResult> Get(short? id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             try
             {
-                return Ok(await _studentInfoService.GetStudentsInfo(id, page, pageSize));
+                return Ok(await _studentInfoService.GetStudentsInfo(id, pageNumber, pageSize));
             }
             catch (Exception e)
             {
@@ -45,7 +45,14 @@ namespace WebAPI.Controllers
         {
             try
             {
-                return Ok(await _studentInfoService.AddStudentInfo(request));
+                if (ModelState.IsValid)
+                {
+                    return Ok(await _studentInfoService.AddStudentInfo(request));
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
             }
             catch (Exception e)
             {

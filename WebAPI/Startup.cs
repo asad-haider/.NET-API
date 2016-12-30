@@ -11,6 +11,7 @@ using DataAccess;
 using Business;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using WebAPI.Middlewares;
 
 namespace WebAPI
 {
@@ -23,7 +24,7 @@ namespace WebAPI
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(env.ContentRootPath)                
                 //.AddJsonFile("appsettings.json", optional: true, reloadOnChange:true)
                 .AddJsonFile($"appsettings-{env.EnvironmentName}.json", optional: false, reloadOnChange: true);
 
@@ -56,6 +57,9 @@ namespace WebAPI
 
             services.AddCors();
 
+            // Swagger
+            services.AddSwaggerGen();
+
             #region MVC configurations
 
             services.AddMvc()
@@ -79,10 +83,11 @@ namespace WebAPI
             //loggerFactory.AddNLog();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             #region JWT Bearer Authentication
 
             //app.UseJwtBearerAuthentication(LoadJwtBearerMiddlewareOptions(env));
+
 
             #endregion
 
@@ -103,17 +108,23 @@ namespace WebAPI
 
             #region MVC Configurations
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMvc();
 
             #endregion
 
             #region Swagger configurations
-            //app.UseSwaggerGen();
-            //app.UseSwaggerUi("API/Help");
+            // Enable middleware to serve generated Swagger as a JSON endpoint
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
+            app.UseSwaggerUi();
             #endregion
+
+            ;
         }
 
-        //private JwtBearerOptions LoadJwtBearerMiddlewareOptions(IHostingEnvironment env)
+        //private JwtBearerOptions LoadJwtBearerMiddlewareOptions(IHostingEnvironment envRegisterRoutes
         //{
         //    //TODO: Load certificate from certificate machine store.
         //    //Load certificate, used for validation of the signature.

@@ -46,24 +46,23 @@ namespace Business.ServiceImplementations
             return await _studentInfoRepo.DeleteStudentInfo(studentId);
         }
 
-        public async Task<IListModelResponse<StudentsInfo>> GetStudentsInfo(short? id, int page, int pageSize)
+        public async Task<IListModelResponse<StudentsInfo>> GetStudentsInfo(short? id, int pageNumber, int pageSize)
         {
             ListModelResponse<StudentsInfo> response = new ListModelResponse<StudentsInfo>();
 
-            response.PageNumber = (page == 0) ? 1 : page;
+            response.PageNumber = (pageNumber == 0) ? 1 : pageNumber;
             response.RequestTimeStamp = DateTime.Now;
-
-            page = (page - 1) * pageSize;
+            pageNumber = (pageNumber - 1) * pageSize;
 
             if (pageSizes.Contains(pageSize))
             {
                 response.PageSize = (pageSize == 0) ? DEFAULT_PAGE_SIZE : pageSize;
-                response.Model = await _studentInfoRepo.GetStudentInfo(id, page, pageSize);
+                response.Model = await _studentInfoRepo.GetStudentInfo(id, pageNumber, pageSize);
             }
             else
             {
                 response.PageSize = DEFAULT_PAGE_SIZE;
-                response.Model= await _studentInfoRepo.GetStudentInfo(id, page, DEFAULT_PAGE_SIZE);
+                response.Model= await _studentInfoRepo.GetStudentInfo(id, pageNumber, DEFAULT_PAGE_SIZE);
             }
 
             response.TotalRecords = await _studentInfoRepo.GetTotalRecords();

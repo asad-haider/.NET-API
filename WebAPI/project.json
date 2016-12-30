@@ -16,6 +16,7 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Business": "1.0.0-*",
     "DomainModel": "1.0.0-*",
+    "Swashbuckle": "6.0.0-beta902",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0"
   },
 
