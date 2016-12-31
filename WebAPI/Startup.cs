@@ -11,7 +11,7 @@ using DataAccess;
 using Business;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using WebAPI.Middlewares;
+using WebApi.Middlewares;
 
 namespace WebAPI
 {

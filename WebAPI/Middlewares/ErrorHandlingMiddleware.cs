@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using WebAPI.Exceptions;
 
-namespace WebAPI.Middlewares
+namespace WebApi.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
@@ -32,28 +31,31 @@ namespace WebAPI.Middlewares
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             if (exception == null) return;
-
-            var code = HttpStatusCode.InternalServerError;
-
-            //if (exception is MyNotFoundException) code = HttpStatusCode.NotFound;
-            //else if (exception is MyException)
-            code = HttpStatusCode.BadRequest;
-
-            await WriteExceptionAsync(context, exception, code).ConfigureAwait(false);
+            await WriteExceptionAsync(context, exception).ConfigureAwait(false);
         }
 
-        private static async Task WriteExceptionAsync(HttpContext context, Exception exception, HttpStatusCode code)
+        private static async Task WriteExceptionAsync(HttpContext context, Exception exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
-            response.StatusCode = (int)code;
+
+            BaseException baseException = null;
+
+            if (exception is NotFoundException) baseException = (NotFoundException)exception;
+            else if (exception is NotFoundException) baseException = (NotFoundException)exception;
+            else if (exception is NotFoundException) baseException = (NotFoundException)exception;
+
+            response.StatusCode = 200;
+
             await response.WriteAsync(JsonConvert.SerializeObject(new
             {
                 error = new
                 {
-                    message = exception.Message,
-                    exception = exception.GetType().Name,
-                    repsonse_code = code
+                    response_message = baseException.response_message,
+                    repsonse_code = baseException.response_code,
+                    exception_time = DateTime.Now,
+                    application_name = baseException.Source,
+                    stack_trace = baseException.StackTrace
                 }
             })).ConfigureAwait(false);
         }

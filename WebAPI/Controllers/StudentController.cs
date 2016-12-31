@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Business.Interfaces;
 using DomainModel.RequestModels;
+using WebAPI.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,13 +30,16 @@ namespace WebAPI.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(""))
+                {
+                    throw new NotFoundException();
+                }
+
                 return Ok(await _studentInfoService.GetStudentsInfo(id, pageNumber, pageSize));
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
-
-                return StatusCode(500, e.Message);
+                throw e;
             }
 
         }
