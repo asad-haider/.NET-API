@@ -10,6 +10,7 @@ namespace WebAPI.Exceptions
         public int ResponseCode { get; set; }
         public string ResponseMessage { get; set; }
         public string ApplicationName { get; set; }
+        public List<Error> Errors { get; set; }
         public DateTime RequestTime { get; set; }
 
         public BaseException()

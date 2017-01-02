@@ -42,12 +42,12 @@ namespace WebApi.Middlewares
             BaseException baseException = null;
 
             if (exception is NotFoundException) baseException = (NotFoundException)exception;
-            else if (exception is NotFoundException) baseException = (NotFoundException)exception;
+            else if (exception is BadRequestException) baseException = (BadRequestException)exception;
             else if (exception is NotFoundException) baseException = (NotFoundException)exception;
 
             response.StatusCode = 200;
 
-            await response.WriteAsync(JsonConvert.SerializeObject(new
+            var jsonResponse = JsonConvert.SerializeObject(new
             {
                 error = new
                 {
@@ -55,9 +55,11 @@ namespace WebApi.Middlewares
                     repsonse_code = baseException.ResponseMessage,
                     exception_time = DateTime.Now,
                     application_name = baseException.Source,
-                    stack_trace = baseException.StackTrace
+                    stack_trace = baseException.Erro
                 }
-            })).ConfigureAwait(false);
+            });
+
+            await response.WriteAsync(jsonResponse).ConfigureAwait(false);
         }
     }
 }

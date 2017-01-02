@@ -10,5 +10,6 @@ namespace WebAPI.Exceptions
         public static string RequestTimeout = "Request Timed out, Please Try again.";
         public static string NotFound = "Record Not Found.";
         public static string InternalError = "Something went wrong, please contact service administrator.";
+        public static string InvalidRequest = "Invalid Request.";
     }
 }

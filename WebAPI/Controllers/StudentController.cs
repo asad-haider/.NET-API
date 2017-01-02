@@ -33,14 +33,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (id.HasValue)
-                {
-                    return Ok(await _studentInfoService.GetStudent(id.Value));
-                }
-                else
-                {
-                    return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
-                }
+                //if (id.HasValue)
+                //{
+                //    return Ok(await _studentInfoService.GetStudent(id.Value));
+                //}
+                //else
+                //{
+                //    return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
+                //}
+
+                throw new NotFoundException();
 
             }
             catch (Exception e)
@@ -61,14 +63,15 @@ namespace WebAPI.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    throw new BadRequestException(ModelState.ToList());
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                throw e;
+                //_logger.LogError(e.Message, e);
 
-                return StatusCode(500, e.Message);
+                //return StatusCode(500, e.Message);
             }
         }
 
