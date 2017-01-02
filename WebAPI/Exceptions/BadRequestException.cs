@@ -28,13 +28,13 @@ namespace WebAPI.Exceptions
                 }
 
                 jsonArray.Add(new Error {
-                    key = item.Key,
-                    errors = errorArray
+                    Property = item.Key,
+                    Errors = errorArray
                 });
                                     
             }
 
-            this.Errors = jsonArray;
+            Errors = jsonArray;
         }
 
         public BadRequestException(string message) : base(message)
@@ -43,7 +43,7 @@ namespace WebAPI.Exceptions
 
     public class Error
     {
-        public string key;
-        public List<string> errors;
+        public string Property;
+        public List<string> Errors;
     }
 }

@@ -49,13 +49,14 @@ namespace WebApi.Middlewares
 
             var jsonResponse = JsonConvert.SerializeObject(new
             {
+                success = false,
                 error = new
                 {
                     response_message = baseException.ResponseCode,
                     repsonse_code = baseException.ResponseMessage,
                     exception_time = DateTime.Now,
                     application_name = baseException.Source,
-                    stack_trace = baseException.Erro
+                    stack_trace = baseException.Errors
                 }
             });
 

@@ -33,17 +33,18 @@ namespace WebAPI.Controllers
         {
             try
             {
-                //if (id.HasValue)
-                //{
-                //    return Ok(await _studentInfoService.GetStudent(id.Value));
-                //}
-                //else
-                //{
-                //    return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
-                //}
+                if (id.HasValue)
+                {
+                    var response = _studentInfoService.GetStudent(id.Value);
 
-                throw new NotFoundException();
+                    if (response == null) throw new NotFoundException();
 
+                    return Ok(await response);
+                }
+                else
+                {
+                    return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
+                }
             }
             catch (Exception e)
             {
@@ -74,15 +75,6 @@ namespace WebAPI.Controllers
                 //return StatusCode(500, e.Message);
             }
         }
-
-        //[HttpPost("upload")]
-        //public async Task<IActionResult> Post(IFormFile file)
-        //{
-        //    var stream = file.OpenReadStream();
-        //    var name = file.FileName;
-
-        //    return null; //null just to make error free
-        //}
 
         [HttpPost("upload")]
         public async void UploadFiles(IList<IFormFile> files)
