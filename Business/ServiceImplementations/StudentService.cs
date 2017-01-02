@@ -85,7 +85,7 @@ namespace Business.ServiceImplementations
             StudentsInfo studentInfo = new StudentsInfo();
 
             #region Prepare the host object
-            studentInfo.Id = studentRequest.id;
+            studentInfo.Id = studentRequest.Id;
             studentInfo.Name = studentRequest.Name;
             studentInfo.Department = studentRequest.Department;
             studentInfo.Class = studentRequest.Class;

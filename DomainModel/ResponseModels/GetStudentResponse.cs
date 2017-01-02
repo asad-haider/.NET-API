@@ -1,12 +1,14 @@
-﻿using System;
+﻿using DomainModel.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DomainModel.ResponseModels
 {
-    public interface IResponse
+    public class GetStudentResponse
     {
-        Boolean Success { get; set; }
+       
     }
 }

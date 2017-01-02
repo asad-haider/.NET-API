@@ -42,7 +42,7 @@ namespace Business.ServiceImplementations
         {
             GetDepartmentResponseInfo response = new GetDepartmentResponseInfo();
             response.departments = await _departmentRepo.GetDepartment(id);
-            return await Task<GetStudentResponseInfo>.FromResult(response.departments);
+            return await Task<GetStudentResponse>.FromResult(response.departments);
         }
 
 

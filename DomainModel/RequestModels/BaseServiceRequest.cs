@@ -7,7 +7,6 @@ namespace DomainModel.RequestModels
 {
     public class BaseServiceRequest
     {
-        public Guid SessionId { get; set; }
         public DateTime RequestTimeStamp { get; set; }
     }
 }
