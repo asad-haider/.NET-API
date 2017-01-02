@@ -7,10 +7,10 @@ namespace WebAPI.Exceptions
 {
     public class BaseException : Exception
     {
-        public int response_code { get; set; }
-        public string response_message { get; set; }
-        public string application_name { get; set; }
-        public DateTime request_time { get; set; }
+        public int ResponseCode { get; set; }
+        public string ResponseMessage { get; set; }
+        public string ApplicationName { get; set; }
+        public DateTime RequestTime { get; set; }
 
         public BaseException()
         {
@@ -18,7 +18,7 @@ namespace WebAPI.Exceptions
 
         public BaseException(string message) : base(message)
         {
-            response_message = message;
+            ResponseMessage = message;
         }
     }
 }

@@ -7,8 +7,6 @@ namespace DomainModel.ResponseModels
 {
     public interface IResponse
     {
-        String Message { get; set; }
-        Boolean DidError { get; set; }
-        String ErrorMessage { get; set; }
+        Boolean Success { get; set; }
     }
 }

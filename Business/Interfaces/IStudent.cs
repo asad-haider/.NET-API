@@ -10,7 +10,8 @@ namespace Business.Interfaces
 {
     public interface IStudent
     {
-        Task<IListModelResponse<StudentsInfo>> GetStudentsInfo(short? id, int pageNumber, int pageSize);
+        Task<ListModelResponse<StudentsInfo>> GetStudentsInfo(int pageNumber, int pageSize);
+        Task<SingleModelResponse<StudentsInfo>> GetStudent(short id);
         Task<int> UpdateStudentInfo(AddUpdateStudentRequestDTO studentRequest);
         Task<int> AddStudentInfo(AddUpdateStudentRequestDTO studentRequest);
         Task<int> DeleteStudentInfo(int studentId);

@@ -46,7 +46,7 @@ namespace Business.ServiceImplementations
             return await _studentInfoRepo.DeleteStudentInfo(studentId);
         }
 
-        public async Task<IListModelResponse<StudentsInfo>> GetStudentsInfo(short? id, int pageNumber, int pageSize)
+        public async Task<ListModelResponse<StudentsInfo>> GetStudentsInfo(int pageNumber, int pageSize)
         {
             ListModelResponse<StudentsInfo> response = new ListModelResponse<StudentsInfo>();
 
@@ -57,17 +57,27 @@ namespace Business.ServiceImplementations
             if (pageSizes.Contains(pageSize))
             {
                 response.PageSize = (pageSize == 0) ? DEFAULT_PAGE_SIZE : pageSize;
-                response.Model = await _studentInfoRepo.GetStudentInfo(id, pageNumber, pageSize);
+                response.Model = await _studentInfoRepo.GetStudentsInfo(pageNumber, pageSize);
             }
             else
             {
                 response.PageSize = DEFAULT_PAGE_SIZE;
-                response.Model= await _studentInfoRepo.GetStudentInfo(id, pageNumber, DEFAULT_PAGE_SIZE);
+                response.Model= await _studentInfoRepo.GetStudentsInfo(pageNumber, DEFAULT_PAGE_SIZE);
             }
 
             response.TotalRecords = await _studentInfoRepo.GetTotalRecords();
+            response.Success = true;
 
             return await Task<ListModelResponse<StudentsInfo>>.FromResult(response);
+        }
+
+        public async Task<SingleModelResponse<StudentsInfo>> GetStudent(short id)
+        {
+            SingleModelResponse<StudentsInfo> response = new SingleModelResponse<StudentsInfo>();
+            response.Success = true;
+            response.RequestTimeStamp = DateTime.Now;
+            response.Model = await _studentInfoRepo.GetStudent(id);
+            return await Task<SingleModelResponse<StudentsInfo>>.FromResult(response);
         }
 
         public async Task<int> UpdateStudentInfo(AddUpdateStudentRequestDTO studentRequest)

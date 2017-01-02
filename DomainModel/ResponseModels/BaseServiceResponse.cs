@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DomainModel.ResponseModels
 {
-    public class BaseServiceResponse : ErrorCommon
+    public class BaseServiceResponse
     {
-        public Guid SessionId { get; set; }
         public DateTime RequestTimeStamp { get; set; }
         public DateTime ResponseTimeStamp { get; set; }
+        public Boolean Success { get; set; }
 
         public BaseServiceResponse()
         {

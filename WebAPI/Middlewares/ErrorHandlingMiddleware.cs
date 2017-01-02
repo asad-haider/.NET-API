@@ -51,8 +51,8 @@ namespace WebApi.Middlewares
             {
                 error = new
                 {
-                    response_message = baseException.response_message,
-                    repsonse_code = baseException.response_code,
+                    response_message = baseException.ResponseCode,
+                    repsonse_code = baseException.ResponseMessage,
                     exception_time = DateTime.Now,
                     application_name = baseException.Source,
                     stack_trace = baseException.StackTrace

@@ -8,7 +8,8 @@ namespace DataAccess.Repositories.Interfaces
 {
     public interface IStudentInfoRepo
     {
-        Task<ICollection<StudentsInfo>> GetStudentInfo(short? id, int pageNumber, int pageSize);
+        Task<ICollection<StudentsInfo>> GetStudentsInfo(int pageNumber, int pageSize);
+        Task<StudentsInfo> GetStudent(short id);
         Task<int> GetTotalRecords();
         Task<int> UpdateStudentInfo(StudentsInfo studentInfo);
         Task<int> AddStudentInfo(StudentsInfo studentInfo);

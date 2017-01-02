@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using Business.Interfaces;
 using DomainModel.RequestModels;
 using WebAPI.Exceptions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
+using System.IO;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,12 +33,15 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(""))
+                if (id.HasValue)
                 {
-                    throw new NotFoundException();
+                    return Ok(await _studentInfoService.GetStudent(id.Value));
+                }
+                else
+                {
+                    return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
                 }
 
-                return Ok(await _studentInfoService.GetStudentsInfo(id, pageNumber, pageSize));
             }
             catch (Exception e)
             {
@@ -63,6 +69,40 @@ namespace WebAPI.Controllers
                 _logger.LogError(e.Message, e);
 
                 return StatusCode(500, e.Message);
+            }
+        }
+
+        //[HttpPost("upload")]
+        //public async Task<IActionResult> Post(IFormFile file)
+        //{
+        //    var stream = file.OpenReadStream();
+        //    var name = file.FileName;
+
+        //    return null; //null just to make error free
+        //}
+
+        [HttpPost("upload")]
+        public async void UploadFiles(IList<IFormFile> files)
+        {
+            long size = 0;
+            foreach (var file in files)
+            {
+                var filename = ContentDispositionHeaderValue
+                                .Parse(file.ContentDisposition)
+                                .FileName
+                                .Trim('"');
+                size += file.Length;
+
+                if (!System.IO.Directory.Exists("Uploads"))
+                {
+                    System.IO.DirectoryInfo directory = System.IO.Directory.CreateDirectory("Uploads");
+                }
+
+                using (FileStream fs = System.IO.File.Create("Uploads/" + file.FileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
             }
         }
 

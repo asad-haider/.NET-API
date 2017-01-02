@@ -10,8 +10,8 @@ namespace WebAPI.Exceptions
     {
         public NotFoundException()
         {
-            response_message = ExceptionMessages.NotFound;
-            response_code = (int) HttpStatusCode.NotFound;
+            ResponseMessage = ExceptionMessages.NotFound;
+            ResponseCode = (int) HttpStatusCode.NotFound;
         }
 
         public NotFoundException(string message) : base(message)

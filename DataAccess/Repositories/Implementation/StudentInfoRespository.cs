@@ -33,16 +33,14 @@ namespace DataAccess.Repositories.Implementation
             return await Task.FromResult(await _context.SaveChangesAsync());
         }
 
-        public async Task<ICollection<StudentsInfo>> GetStudentInfo(short? id, int pageNumber, int pageSize)
+        public async Task<StudentsInfo> GetStudent(short id)
         {
-            if (id.HasValue)
-            {
-                return await Task.FromResult(_context.StudentsInfo.FirstOrDefault(student => student.Id == id.Value) as ICollection<StudentsInfo>);
-            }
-            else
-            {
-                return await Task.FromResult(_context.StudentsInfo.Skip(pageNumber).Take(pageSize).ToList());
-            }
+                return await Task.FromResult(_context.StudentsInfo.FirstOrDefault(student => student.Id == id) as StudentsInfo);
+        }
+
+        public async Task<ICollection<StudentsInfo>> GetStudentsInfo(int pageNumber, int pageSize)
+        {
+            return await Task.FromResult(_context.StudentsInfo.Skip(pageNumber).Take(pageSize).ToList());
         }
 
         public async Task<int> GetTotalRecords()
