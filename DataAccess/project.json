@@ -5,7 +5,9 @@
     "DomainModel": "1.0.0-*",
     "Microsoft.EntityFrameworkCore": "1.0.1",
     "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+    "Microsoft.IdentityModel.Protocols": "2.1.0",
     "NETStandard.Library": "1.6.0",
+    "System.Runtime.Extensions": "4.3.0",
     "TechnoLab.CommonLib.EntityFramework": "1.0.4"
   },
 

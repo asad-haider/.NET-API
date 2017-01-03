@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DomainModel.Models;
 using TechnoLab.CommonLib.EntityFramework.Persistence;
+using System;
 
 namespace DataAccess
 {
@@ -12,8 +13,14 @@ namespace DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=.;Database=students;User ID=sa;Password=sa123");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
+
+            //var connectionString = Configuration["QMSDbConnection"];
+
+            var environmentConnectionString = Environment.GetEnvironmentVariable("QMSDbConnection");
+
+            optionsBuilder.UseSqlServer(@environmentConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

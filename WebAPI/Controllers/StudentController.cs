@@ -79,6 +79,8 @@ namespace WebAPI.Controllers
         [HttpPost("upload")]
         public async void UploadFiles(IList<IFormFile> files)
         {
+            if (files.Count == 0) files = HttpContext.Request.Form.Files.ToList();
+
             long size = 0;
             foreach (var file in files)
             {
