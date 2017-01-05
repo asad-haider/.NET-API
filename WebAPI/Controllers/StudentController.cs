@@ -10,6 +10,8 @@ using WebAPI.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using System.IO;
+using WebApi.Middlewares;
+using System.Net.Http;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -38,9 +40,21 @@ namespace WebAPI.Controllers
                     var response = _studentInfoService.GetStudent(id.Value);
 
                     if (response == null) throw new NotFoundException();
+        
+                    QMSApiClient _client = _client = new QMSApiClient(new HttpClient());
+
+                    String baseUrl = "";
+                    _client.BaseURL = baseUrl;
+
+                    String pathUrl = "";
+                    _client.REST_SERVICE_URL_PREFIX = pathUrl;
+
+                    return await Task.FromResult(Ok(await _client.GetResourceAsync()));
 
                     return Ok(await response);
+                
                 }
+
                 else
                 {
                     return Ok(await _studentInfoService.GetStudentsInfo(pageNumber, pageSize));
