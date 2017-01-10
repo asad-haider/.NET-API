@@ -8,10 +8,10 @@ using Business.Interfaces;
 using DomainModel.RequestModels;
 using WebAPI.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Net.Http.Headers;
 using System.IO;
-using WebApi.Middlewares;
-using System.Net.Http;
+using DomainModel.Models;
+using DomainModel.ResponseModels;
+using ContentDispositionHeaderValue = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,22 +37,17 @@ namespace WebAPI.Controllers
             {
                 if (id.HasValue)
                 {
-                    var response = _studentInfoService.GetStudent(id.Value);
+                    var studentResponse = _studentInfoService.GetStudent(id.Value);
 
-                    if (response == null) throw new NotFoundException();
-        
-                    QMSApiClient _client = _client = new QMSApiClient(new HttpClient());
+                    if (studentResponse.Result.Model == null) throw new NotFoundException();
 
-                    String baseUrl = "";
-                    _client.BaseURL = baseUrl;
-
-                    String pathUrl = "";
-                    _client.REST_SERVICE_URL_PREFIX = pathUrl;
-
-                    return await Task.FromResult(Ok(await _client.GetResourceAsync()));
-
-                    return Ok(await response);
-                
+                    var apiClient = new QMSApiClient
+                    {
+                        BaseURL = "http://localhost:5000",
+                        REST_SERVICE_URL_PREFIX = "api/student"
+                    };
+                    var jsonResponse = apiClient.GetJsonResponse();
+                    return Ok(Serialization<ListModelResponse<StudentsInfo>>.Serialize(jsonResponse));
                 }
 
                 else

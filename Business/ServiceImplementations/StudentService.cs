@@ -12,29 +12,27 @@ namespace Business.ServiceImplementations
 {
     public class StudentService : IStudent
     {
-        private IStudentInfoRepo _studentInfoRepo;
-        private List<int> pageSizes;
-        private const int DEFAULT_PAGE_SIZE = 10;
+        private readonly IStudentInfoRepo _studentInfoRepo;
+        private readonly List<int> _pageSizes;
+        private const int DefaultPageSize = 10;
 
         public StudentService(IStudentInfoRepo studentInfoRepo)
         {
             _studentInfoRepo = studentInfoRepo;
-            pageSizes = new List<int>();
-            pageSizes.Add(10);
-            pageSizes.Add(25);
-            pageSizes.Add(50);
-            pageSizes.Add(100);
+            _pageSizes = new List<int> {10, 25, 50, 100};
         }
 
 
         public async Task<int> AddStudentInfo(AddUpdateStudentRequestDTO studentRequest)
         {
-            StudentsInfo studentInfo = new StudentsInfo();
+            var studentInfo = new StudentsInfo
+            {
+                Name = studentRequest.Name,
+                Class = studentRequest.Class,
+                Department = studentRequest.Department
+            };
 
             #region Prepare the host object
-            studentInfo.Name = studentRequest.Name;
-            studentInfo.Class = studentRequest.Class;
-            studentInfo.Department = studentRequest.Department;
 
             #endregion
 
@@ -48,21 +46,23 @@ namespace Business.ServiceImplementations
 
         public async Task<ListModelResponse<StudentsInfo>> GetStudentsInfo(int pageNumber, int pageSize)
         {
-            ListModelResponse<StudentsInfo> response = new ListModelResponse<StudentsInfo>();
+            var response = new ListModelResponse<StudentsInfo>
+            {
+                PageNumber = (pageNumber == 0) ? 1 : pageNumber,
+                RequestTimeStamp = DateTime.Now
+            };
 
-            response.PageNumber = (pageNumber == 0) ? 1 : pageNumber;
-            response.RequestTimeStamp = DateTime.Now;
             pageNumber = (pageNumber - 1) * pageSize;
 
-            if (pageSizes.Contains(pageSize))
+            if (_pageSizes.Contains(pageSize))
             {
-                response.PageSize = (pageSize == 0) ? DEFAULT_PAGE_SIZE : pageSize;
+                response.PageSize = (pageSize == 0) ? DefaultPageSize : pageSize;
                 response.Model = await _studentInfoRepo.GetStudentsInfo(pageNumber, pageSize);
             }
             else
             {
-                response.PageSize = DEFAULT_PAGE_SIZE;
-                response.Model= await _studentInfoRepo.GetStudentsInfo(pageNumber, DEFAULT_PAGE_SIZE);
+                response.PageSize = DefaultPageSize;
+                response.Model= await _studentInfoRepo.GetStudentsInfo(pageNumber, DefaultPageSize);
             }
 
             response.TotalRecords = await _studentInfoRepo.GetTotalRecords();
@@ -73,22 +73,26 @@ namespace Business.ServiceImplementations
 
         public async Task<SingleModelResponse<StudentsInfo>> GetStudent(short id)
         {
-            SingleModelResponse<StudentsInfo> response = new SingleModelResponse<StudentsInfo>();
-            response.Success = true;
-            response.RequestTimeStamp = DateTime.Now;
-            response.Model = await _studentInfoRepo.GetStudent(id);
+            var response = new SingleModelResponse<StudentsInfo>
+            {
+                Success = true,
+                RequestTimeStamp = DateTime.Now,
+                Model = await _studentInfoRepo.GetStudent(id)
+            };
             return await Task<SingleModelResponse<StudentsInfo>>.FromResult(response);
         }
 
         public async Task<int> UpdateStudentInfo(AddUpdateStudentRequestDTO studentRequest)
         {
-            StudentsInfo studentInfo = new StudentsInfo();
-
             #region Prepare the host object
-            studentInfo.Id = studentRequest.Id;
-            studentInfo.Name = studentRequest.Name;
-            studentInfo.Department = studentRequest.Department;
-            studentInfo.Class = studentRequest.Class;
+
+            var studentInfo = new StudentsInfo
+            {
+                Id = studentRequest.Id,
+                Name = studentRequest.Name,
+                Department = studentRequest.Department,
+                Class = studentRequest.Class
+            };
 
             #endregion
 

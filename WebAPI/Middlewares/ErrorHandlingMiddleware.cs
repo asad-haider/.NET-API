@@ -43,7 +43,6 @@ namespace WebApi.Middlewares
 
             if (exception is NotFoundException) baseException = (NotFoundException)exception;
             else if (exception is BadRequestException) baseException = (BadRequestException)exception;
-            else if (exception is NotFoundException) baseException = (NotFoundException)exception;
 
             response.StatusCode = 200;
 
